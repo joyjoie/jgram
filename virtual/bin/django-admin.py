@@ -1,4 +1,4 @@
-#!/home/joy/Documents/jgram/virtual/bin/python3.6
+#!/home/joy/Documents/joygram/virtual/bin/python3.6
 from django.core import management
 
 if __name__ == "__main__":
