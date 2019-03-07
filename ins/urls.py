@@ -18,5 +18,6 @@ from django.contrib import admin
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-    url(r'',include('jgram.urls'))
+    url(r'',include('jgram.urls')),
+    url(r'^accounts/', include('registration.backends.simple.urls')),
 ]

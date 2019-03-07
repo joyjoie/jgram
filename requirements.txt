@@ -1,9 +1,7 @@
-bootstrap4==0.0.5
 alembic==1.0.7
 apturl==0.5.2
 asn1crypto==0.24.0
 autopep8==1.4.3
-Django==1.11
 blinker==1.4
 Brlapi==0.6.6
 certifi==2018.11.29
@@ -14,6 +12,7 @@ cryptography==2.1.4
 cupshelpers==1.0
 defer==1.0.6
 distro-info==0.18
+Django==1.11
 django-bootstrap3==11.0.0
 dominate==2.3.5
 Flask==1.0.2
