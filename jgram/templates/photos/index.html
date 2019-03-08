@@ -1,2 +1,30 @@
 {%extends 'photos/base.html'%}
-<h2>Hello World</h2>
+{% block content %}
+{{block.super}}
+
+<div class="container">
+
+    <div class="row">
+     
+      <!-- Single Image -->
+      {%for image in images%}
+
+      <!--Display images  -->
+      <div class="col-sm-6 col-md-3">
+        <img src="{{image.image.url}}" class="img-responsive" alt="Image" style="width: 350px;height:300px; margin: 5px 5px 15px 0px;" >
+        <p>{{ image.pub_date }}</p>
+        
+      
+      </div>
+      {% endfor %}
+    </div>
+  
+</div>
+  
+  
+
+
+
+
+
+{% endblock %}
