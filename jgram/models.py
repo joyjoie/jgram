@@ -11,6 +11,17 @@ class Image(models.Model):
     def save_image(self):
         self.save()
 
+
+    @classmethod
+    def display_images(cls):
+        return cls.objects.all()
+
+    @classmethod
+    def index(cls):
+        today = dt.date.today()
+        yo = cls.objects.filter(pub_date__date=today)
+        return yo
+
 class Followers(models.Model):
     name = models.CharField(max_length=60)
 

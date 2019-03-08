@@ -7,7 +7,7 @@ from django.contrib.auth.decorators import login_required
 @login_required(login_url='/accounts/login/')
 
 def index(request):
-
+    images = Image.display_images() 
     return render(request, 'photos/index.html')
 
 
