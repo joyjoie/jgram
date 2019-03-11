@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.http  import HttpResponse
 from django.contrib.auth.decorators import login_required
-
+from .forms import ProfileUpdateForm
 from .models import Image,Followers,Profile
 
 
@@ -24,8 +24,9 @@ def image(request, image):
         raise Http404()
     return render(request,"photos/image.html", {"foto":foto})
 
-
+@login_required
 def profile(request):
-    foll=Profile.pro()
+    p_form=ProfileUpdateForm()
+    fo=Profile.pro()
     bo=Profile.objects.get(bio =bio)
-    return render(request, 'profile/profile.html',{"foll":foll, "bio":bio} )
+    return render(request, 'profile/profile.html',{"fo":fo, "bio":bio,'p_form':p_form} )

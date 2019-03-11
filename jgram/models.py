@@ -49,3 +49,6 @@ class Profile(models.Model):
     @classmethod
     def pro(cls):
         return cls.objects.all()
+
+class ProfileUpdateForm(models.Model):
+    ima
