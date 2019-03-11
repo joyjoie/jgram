@@ -3,7 +3,7 @@ from django.http  import HttpResponse
 from django.contrib.auth.decorators import login_required
 from .forms import ProfileUpdateForm
 from .models import Image,Followers,Profile
-
+from django.contrib import messages
 
 @login_required(login_url='/accounts/login/')
 
@@ -26,7 +26,17 @@ def image(request, image):
 
 @login_required
 def profile(request):
-    p_form=ProfileUpdateForm()
+    if request.method =='POST':
+        p_form=ProfileUpdateForm(request.POST, request.FILES,instance=request.user.profile)
+  
+        if p_form.is_valid():
+            p_form.save()
+            messages.success(request, f'Your account has been updated!')
+            return redirect('profile')
+  
+    else:
+        p_form=ProfileUpdateForm(request.POST,request.FILES,instance=request.user.profile)
+
+
     fo=Profile.pro()
-    bo=Profile.objects.get(bio =bio)
-    return render(request, 'profile/profile.html',{"fo":fo, "bio":bio,'p_form':p_form} )
+    return render(request, 'profile/profile.html',{"fo":fo,'p_form':p_form} )
