@@ -40,3 +40,11 @@ def profile(request):
 
     fo=Profile.pro()
     return render(request, 'profile/profile.html',{"fo":fo,'p_form':p_form} )
+
+
+def comment(request):
+    image_id=request.POST.get(id)
+    image=Image.objects.get(imgid=id)
+    Comments.objects.create(user=request.user,image= image, comments=request.POST.get('comment'))
+
+    return render( request, )

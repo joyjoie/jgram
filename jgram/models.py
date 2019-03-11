@@ -7,7 +7,7 @@ from PIL import Image
 class Image(models.Model):
     name = models.CharField(max_length=60)
     image = models.ImageField(upload_to="image/")
-    comments= models.TextField()
+    caption= models.TextField()
     pub_date = models.DateTimeField(auto_now_add=True)
 
     def save_image(self):
@@ -16,6 +16,10 @@ class Image(models.Model):
 
     @classmethod
     def display_images(cls):
+        return cls.objects.all()
+    
+    @classmethod
+    def display_comments(cls):
         return cls.objects.all()
 
     @classmethod
@@ -37,7 +41,7 @@ class Followers(models.Model):
 
 class Profile(models.Model):
     user = models.OneToOneField(User,on_delete=models.CASCADE)
-    bio =models.TextField()
+    bio = models.CharField(max_length=60)
     image=models.ImageField(default='default.jpg',upload_to='profile_pics')
     followers=models.ForeignKey(Followers)
     
@@ -49,14 +53,21 @@ class Profile(models.Model):
 
         img = Image.open(self.image.path)
 
-        if img.height > 300 or img.width > 300:
-            output_size = (300, 300)
+        if img.height > 100 or img.width > 100:
+            output_size = (100, 100)
             img.thumbnail(output_size)
             img.save(self.image.path)
-        self.save()
+       
     @classmethod
     def pro(cls):
         return cls.objects.all()
 
 
-    
+class Comments(models.Model):
+    img=models.ForeignKey(Image)
+    user=models.ForeignKey( User)
+    comment= models.CharField(max_length=60)
+
+    def save_comments(self):
+        self.save()
+
