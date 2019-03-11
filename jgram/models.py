@@ -1,5 +1,6 @@
 from django.db import models
 import datetime as dt
+from django.contrib.auth.models import User
 # Create your models here.
 
 class Image(models.Model):
@@ -30,12 +31,13 @@ class Followers(models.Model):
 
 
 class Profile(models.Model):
-    user = models.CharField(max_length=60)
+    user = models.OneToOneField(User,on_delete=models.CASCADE)
     bio =models.TextField()
-    image=models.ForeignKey(Image)
+    image=models.ImageField(default='default.jpg',upload_to='profile_pics')
     followers=models.ForeignKey(Followers)
     
-    
+    def __str__(self):
+        return f'{self.user.username} Profile'
     
     def save_profile(self):
         self.save()
