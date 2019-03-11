@@ -50,5 +50,5 @@ class Profile(models.Model):
     def pro(cls):
         return cls.objects.all()
 
-class ProfileUpdateForm(models.Model):
-    ima
+
+    
