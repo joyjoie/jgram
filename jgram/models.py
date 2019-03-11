@@ -29,6 +29,10 @@ class Followers(models.Model):
     def save_followers(self):
         self.save()
 
+    @classmethod
+    def foll(cls):
+        return cls.objects.all()
+
 
 class Profile(models.Model):
     user = models.OneToOneField(User,on_delete=models.CASCADE)
@@ -41,4 +45,7 @@ class Profile(models.Model):
     
     def save_profile(self):
         self.save()
-
+        
+    @classmethod
+    def pro(cls):
+        return cls.objects.all()

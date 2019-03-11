@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 from django.http  import HttpResponse
 from django.contrib.auth.decorators import login_required
+
 from .models import Image,Followers,Profile
 
 
@@ -22,3 +23,9 @@ def image(request, image):
     except DoesNotExist:
         raise Http404()
     return render(request,"photos/image.html", {"foto":foto})
+
+
+def profile(request):
+    foll=Profile.pro()
+    bo=Profile.objects.get(bio =bio)
+    return render(request, 'profile/profile.html',{"foll":foll, "bio":bio} )
