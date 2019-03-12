@@ -65,6 +65,10 @@ class Comments(models.Model):
     user=models.ForeignKey( User)
     comment= models.CharField(max_length=60)
 
+    @classmethod
+    def display_comments(cls):
+        return cls.objects.all()
+
     def save_comments(self):
         self.save()
 

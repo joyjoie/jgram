@@ -1,8 +1,8 @@
 from django.shortcuts import render, redirect,get_object_or_404,HttpResponseRedirect
 from django.http  import HttpResponse
 from django.contrib.auth.decorators import login_required
-from .forms import ProfileUpdateForm
-from .models import Image,Followers,Profile
+from .forms import ProfileUpdateForm,CommentForm
+from .models import Image,Followers,Profile, Comments
 from django.contrib import messages
 
 @login_required(login_url='/accounts/login/')
@@ -12,9 +12,20 @@ from django.contrib import messages
 @login_required(login_url='/accounts/login/')
 def index(request):
     images = Image.display_images()
-     
-      
-    return render(request, 'photos/index.html',{"images":images} )
+    comments=Comments.display_comments()
+    if request.method=='POST':
+        form=CommentForm(request.POST)
+        if form.is_valid():
+            image_id=int(request.POST.get('image_id'))
+            image=Image.objects.get(id=image_id)
+            comment=form.save(commit=False)
+            comment.img=image
+            comment.user=request.user
+            comment.save()
+            return redirect('index')
+    else:
+        form=CommentForm()
+    return render(request, 'photos/index.html',{"images":images, "comments":comments , "form":form} )
     
 
 def image(request, id,slug):
@@ -59,5 +70,4 @@ def profile(request):
     fo=Profile.pro()
     return render(request, 'profile/profile.html',{"fo":fo,'p_form':p_form} )
 
-def upload(request):
-    return render(request, upload.html)
+

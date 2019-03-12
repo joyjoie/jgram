@@ -9,7 +9,7 @@ urlpatterns=[
     url(r'^image/(\d+)',views.image,name ='image'),
     url(r'^profile/$', views.profile, name='profile'),
     url(r'^like/$', views.like_post, name='like_post'),
-
+    # url(r'^upload/$', views.upload, name='upload'),
 ]
 
 if settings.DEBUG:

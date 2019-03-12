@@ -1,40 +1,60 @@
 {%extends 'photos/base.html'%}
+{% load bootstrap3%}
 {% block content %}
 {{block.super}}
 
 <div class="container">
 
-    <div class="row">
-     
-      <!-- Single Image -->
-      {%for image in images%}
+  <div class="row">
 
-      <!--Display images  -->
-      <div class="col-sm-6 col-md-3">
-        <img src="{{image.image.url}}" class="img-responsive" alt="Image" style="padding-top :10px; width: 350px;height:300px; margin: 5px 5px 15px 0px;" >
-        <p>{{ image.pub_date }}</p>
-        <p>{{ image.caption }}</p>
+    <!-- Single Image -->
+    {%for image in images%}
 
-        {{total_likes}} |Likes {{total_likes |pluralize}}
-        <form action="{% url 'like_post'%}" method="POST">
-        
-          {% csrf_token%}
-          {%if is_liked%}
-          <button type="submit" name="image_id" value="{{image.id}}" class="btn btn-danger"> <i onclick="myFunction(this)" class="fa fa-heart-o fa-2x"></i>disLike </button> 
-          
-          {%else%}
-          <button type="submit" name="image_id" value="{{image.id}}" class="button"> <i onclick="myFunction(this)" class="fa fa-heart-o fa-2x"></i>Like </button> 
-          {%endif%}
+    <!--Display images  -->
+    <div class="col-sm-6 col-md-3">
+      <img src="{{image.image.url}}" class="img-responsive" alt="Image"
+        style="padding-top :10px; width: 350px;height:300px; margin: 5px 5px 15px 0px;">
+      <p>{{ image.pub_date }}</p>
+      <p>{{ image.caption }}</p>
 
-        </form>
-      
-      </div>
-      {% endfor %}
+      {{total_likes}} |Likes {{total_likes |pluralize}}
+
+      <form action="{% url 'like_post'%}" method="POST">
+
+        {% csrf_token%}
+        {%if is_liked%}
+        <button type="submit" name="image_id" value="{{image.id}}" class="btn btn-danger"> <i onclick="myFunction(this)"
+            class="fa fa-heart-o fa-2x"></i>disLike </button>
+
+        {%else%}
+        <button type="submit" name="image_id" value="{{image.id}}" class="button"> <i onclick="myFunction(this)"
+            class="fa fa-heart-o fa-2x"></i>Like </button>
+        {%endif%}
+
+      </form>
+      {% for comment in comments%}
+        {%if comment.img == image%}
+        <p><strong>{{comment.user.username}}</strong> {{comment.comment}}</p>
+        {% endif%}
+      {%endfor%}
+
+      <form action="{% url 'index'%}" method="POST" enctype="multipart/form-data">
+
+        {% csrf_token%}
+        <input type="hidden" name="image_id" value="{{image.id}}">
+        {% bootstrap_form form layout='inline' %}
+        <input type="submit" value="comment">
+
+
+      </form>
+
     </div>
-  
+    {% endfor %}
+  </div>
+
 </div>
-  
-  
+
+
 
 
 
