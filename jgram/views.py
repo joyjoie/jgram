@@ -17,10 +17,10 @@ def index(request):
     return render(request, 'photos/index.html',{"images":images} )
     
 
-def image(request, image):
-    
+def image(request, id,slug):
+    image=get_object_or_404()
     try:
-        foto = Image.objects.get(id = image_id)
+        foto = Image.objects.get(id = image_id, slug=slug)
 
     except DoesNotExist:
         raise Http404()
@@ -29,7 +29,18 @@ def image(request, image):
     if image.likes.filter(id = request.user.id).exists():
         is_liked = True
 
-    return render(request,"photos/image.html", {"foto":foto,"is_liked":is_liked, "total_likes":image.total_likes()})
+    return render(request,"photos/image.html", {"foto":foto,"is_liked":is_liked, "total_likes":image.total_likes(), "image":image})
+
+def like_post(request):
+    image= get_object_or_404(Image, id=request.POST.get('image_id'))
+    image.likes.add(request.user)
+    if image.likes.filter(id=request.user.id).exists():
+        image.likes.remove(request.user)
+        is_liked=False
+    else:
+        image.likes.add(request.user)
+        is_liked =True
+    return HttpResponseRedirect(image.get_absolute_url()) 
 
 @login_required
 def profile(request):
@@ -48,13 +59,5 @@ def profile(request):
     fo=Profile.pro()
     return render(request, 'profile/profile.html',{"fo":fo,'p_form':p_form} )
 
-def like_post(request):
-    image= get_object_or_404(Image, id=request.POST.get('image_id'))
-    image.likes.add(request.user)
-    if image.likes.filter(id=request.user.id).exists():
-        image.likes.remove(request.user)
-        is_liked=False
-    else:
-        image.likes.add(request.user)
-        is_liked =True
-    return HttpResponseRedirect(image.get_absolute_url())
+def upload(request):
+    return render(request, upload.html)

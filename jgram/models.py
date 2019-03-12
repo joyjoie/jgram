@@ -30,7 +30,7 @@ class Image(models.Model):
         return reverse('index')
 
     def total_likes(self):
-         return self.likes.count()
+        return self.likes.count()
 class Followers(models.Model):
     name = models.CharField(max_length=60)
 
