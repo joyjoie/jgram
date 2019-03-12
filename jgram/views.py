@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect,get_object_or_404,HttpResponseRedirect
 from django.http  import HttpResponse
 from django.contrib.auth.decorators import login_required
 from .forms import ProfileUpdateForm
@@ -9,11 +9,13 @@ from django.contrib import messages
 
 
 
-
+@login_required(login_url='/accounts/login/')
 def index(request):
-    images = Image.display_images() 
+    images = Image.display_images()
+     
+      
     return render(request, 'photos/index.html',{"images":images} )
-
+    
 
 def image(request, image):
     
@@ -22,7 +24,12 @@ def image(request, image):
 
     except DoesNotExist:
         raise Http404()
-    return render(request,"photos/image.html", {"foto":foto})
+
+    is_liked = False
+    if image.likes.filter(id = request.user.id).exists():
+        is_liked = True
+
+    return render(request,"photos/image.html", {"foto":foto,"is_liked":is_liked, "total_likes":image.total_likes()})
 
 @login_required
 def profile(request):
@@ -41,10 +48,13 @@ def profile(request):
     fo=Profile.pro()
     return render(request, 'profile/profile.html',{"fo":fo,'p_form':p_form} )
 
-
-def comment(request):
-    image_id=request.POST.get(id)
-    image=Image.objects.get(imgid=id)
-    Comments.objects.create(user=request.user,image= image, comments=request.POST.get('comment'))
-
-    return render( request, )
+def like_post(request):
+    image= get_object_or_404(Image, id=request.POST.get('image_id'))
+    image.likes.add(request.user)
+    if image.likes.filter(id=request.user.id).exists():
+        image.likes.remove(request.user)
+        is_liked=False
+    else:
+        image.likes.add(request.user)
+        is_liked =True
+    return HttpResponseRedirect(image.get_absolute_url())

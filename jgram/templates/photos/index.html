@@ -13,7 +13,20 @@
       <div class="col-sm-6 col-md-3">
         <img src="{{image.image.url}}" class="img-responsive" alt="Image" style="padding-top :10px; width: 350px;height:300px; margin: 5px 5px 15px 0px;" >
         <p>{{ image.pub_date }}</p>
+        <p>{{ image.caption }}</p>
+
+        {{total_likes}} |Likes {{total_likes |pluralize}}
+        <form action="{% url 'like_post'%}" method="POST">
         
+          {% csrf_token%}
+          {%if is_liked%}
+          <button type="submit" name="image_id" value="{{image.id}}" class="btn btn-danger"> <i onclick="myFunction(this)" class="fa fa-heart-o fa-2x"></i>disLike </button> <h3</h3> 
+          
+          {%else%}
+          <button type="submit" name="image_id" value="{{image.id}}" class="button"> <i onclick="myFunction(this)" class="fa fa-heart-o fa-2x"></i>Like </button> <h3></h3>
+          {%endif%}
+
+        </form>
       
       </div>
       {% endfor %}
