@@ -57,7 +57,7 @@ def like_post(request):
     return HttpResponseRedirect(image.get_absolute_url()) 
 
 @login_required
-def profile(request):
+def profile(request, id):
     if request.method =='POST':
         p_form=ProfileUpdateForm(request.POST, request.FILES,instance=request.user.profile)
   
@@ -83,3 +83,15 @@ def upload(request):
     else:
         form =ImageForm()
     return render(request, 'photos/addimg.html', {"form":form})
+
+def search(request):
+    if 'search' in request.GET and request.GET['search']:
+        search_term = request.GET.get('search')
+        profiles = Profile.search_profile(search_term)
+        message = f'{search_term}'
+
+        return render(request, 'photos/search.html',{'message':message, 'profiles':profiles})
+    else:
+        message = 'Enter term to search'
+        return render(request, 'photos/search.html', {'message':message})
+

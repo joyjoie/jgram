@@ -4,14 +4,14 @@ from django.contrib.auth.models import User
 from django.urls import reverse
 from django.db.models.signals import post_save
 from django.dispatch import receiver
-
+from django.conf import settings
 
 class Image(models.Model):
     name = models.CharField(max_length=60)
     image = models.ImageField(upload_to="image/")
     caption = models.TextField()
     pub_date = models.DateTimeField(auto_now_add=True)
-    likes = models.ManyToManyField(User, related_name='likes', blank=True)
+    likes = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='likes', blank=True)
 
     def save_image(self):
         self.save()
@@ -35,7 +35,7 @@ class Image(models.Model):
 
 class Followers(models.Model):
     name = models.CharField(max_length=60)
-
+    
     def save_followers(self):
         self.save()
 
@@ -48,7 +48,7 @@ class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     bio = models.CharField(max_length=60 ,blank=True)
     image = models.ImageField(default='default.jpg', upload_to='profile_pics')
-    # followers=models.ForeignKey(Followers)
+    # follows=models.ManyToManyField('self', related_name='follows', symmetrical=False)
 
     def __str__(self):
         return f'{self.user.username} Profile'
@@ -56,6 +56,18 @@ class Profile(models.Model):
     def save_profile(self):
        self.save()
 
+    def delete_profile(self):
+        self.delete()
+
+    def update_bio(self, bio):
+        self.bio = bio
+        self.save()
+
+    @classmethod
+    def search_profile(cls, name):
+        profile = Profile.objects.filter(user__username__icontains = name)
+        return profile
+        
     @classmethod
     def pro(cls):
         return cls.objects.all()
