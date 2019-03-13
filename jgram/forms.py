@@ -8,7 +8,7 @@ from .models import Profile, Comments
 class ProfileUpdateForm(forms.ModelForm):
     class Meta:
         model = Profile
-        fields = ['image']
+        fields = ['image','bio']
 
 class CommentForm(forms.ModelForm):
     class Meta:
