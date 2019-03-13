@@ -28,9 +28,12 @@
             {{ p_form|crispy }}
         </fieldset>
         <div class="form-group">
-            <button class="btn btn-outline-info" type="submit">Update Profile </button>
+            <button class="btn btn-outline-info" type="submit">Update Profile  Picture or Bio</button>
         </div>
     </form>
+    <div>
+        <a href="{% url 'upload'%}"> Upload an image</a>
+    </div>
 </div>
 
 {% endblock content %}

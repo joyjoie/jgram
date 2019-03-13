@@ -46,7 +46,7 @@ class Followers(models.Model):
 
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    bio = models.CharField(max_length=60)
+    bio = models.CharField(max_length=60 ,blank=True)
     image = models.ImageField(default='default.jpg', upload_to='profile_pics')
     # followers=models.ForeignKey(Followers)
 

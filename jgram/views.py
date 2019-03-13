@@ -1,11 +1,10 @@
 from django.shortcuts import render, redirect,get_object_or_404,HttpResponseRedirect
 from django.http  import HttpResponse
 from django.contrib.auth.decorators import login_required
-from .forms import ProfileUpdateForm,CommentForm
+from .forms import ProfileUpdateForm,CommentForm,ImageForm
 from .models import Image,Followers,Profile, Comments
 from django.contrib import messages
 
-@login_required(login_url='/accounts/login/')
 
 
 
@@ -25,12 +24,16 @@ def index(request):
             return redirect('index')
     else:
         form=CommentForm()
-    return render(request, 'photos/index.html',{"images":images, "comments":comments , "form":form} )
+
+    context ={"images":images, "comments":comments , "form":form}
+        
+    return render(request, 'photos/index.html',context )
     
+
 
 def image(request, id,slug):
     image=get_object_or_404()
-    try:
+    try: 
         foto = Image.objects.get(id = image_id, slug=slug)
 
     except DoesNotExist:
@@ -71,3 +74,12 @@ def profile(request):
     return render(request, 'profile/profile.html',{"fo":fo,'p_form':p_form} )
 
 
+def upload(request):
+    if request.method =='POST':
+        form=ImageForm(request.POST,request.FILES)
+        if form.is_valid():
+            form.save()
+            return redirect('profile')
+    else:
+        form =ImageForm()
+    return render(request, 'photos/addimg.html', {"form":form})

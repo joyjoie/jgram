@@ -1,4 +1,5 @@
 from django.conf.urls import url ,include
+
 from . import views
 from django.conf import settings
 from django.conf.urls.static import static
@@ -9,7 +10,7 @@ urlpatterns=[
     url(r'^image/(\d+)',views.image,name ='image'),
     url(r'^profile/$', views.profile, name='profile'),
     url(r'^like/$', views.like_post, name='like_post'),
-    # url(r'^upload/$', views.upload, name='upload'),
+    url(r'^upload/$', views.upload, name='upload'),
 ]
 
 if settings.DEBUG:
