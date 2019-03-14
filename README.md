@@ -7,7 +7,7 @@ A python app that lets one comment like and follow user
 #### By **Joy Wendo**
 ## Description
 This is a Django application which allows registered users to view their photos and those of people they follow
-Try it out : <https://joygram.herokuapp.com/>
+Try it out : <https://joygram1.herokuapp.com/>
 ## Prerequisites
 You need the following to work on the project: -
 * Python version 3.6 
@@ -70,7 +70,7 @@ joy=# CREATE DATABASE photo;
 |Comments | Add Comments| Total number of comments displayed|
 
 ## Link to Live Website 
-Here is a link to the live website: <https://joygram.herokuapp.com/>
+Here is a link to the live website: <https://joygram1.herokuapp.com/>
 ## Known Bugs
 None known at the moment.
 ## Technologies Used
