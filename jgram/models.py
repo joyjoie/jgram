@@ -34,7 +34,11 @@ class Image(models.Model):
 
 
 class Followers(models.Model):
-    name = models.CharField(max_length=60)
+    name = models.CharField(max_length=60, unique=True)
+
+    def __str__(self):
+        return self.name
+
     
     def save_followers(self):
         self.save()
@@ -67,7 +71,7 @@ class Profile(models.Model):
     def search_profile(cls, name):
         profile = Profile.objects.filter(user__username__icontains = name)
         return profile
-        
+
     @classmethod
     def pro(cls):
         return cls.objects.all()

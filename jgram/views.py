@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect,get_object_or_404,HttpResponseRedirect
 from django.http  import HttpResponse
 from django.contrib.auth.decorators import login_required
-from .forms import ProfileUpdateForm,CommentForm,ImageForm
+from .forms import ProfileUpdateForm,CommentForm,ImageForm,FollowersForm
 from .models import Image,Followers,Profile, Comments
 from django.contrib import messages
 
@@ -58,20 +58,50 @@ def like_post(request):
 
 @login_required
 def profile(request, id):
+    profile=Profile.objects.get(id=id)
+
+
+    if request.method =='POST' and 'follower' in request.POST:
+        print("Follow clicked")
+        f_form=FollowersForm(request.POST)
+        if f_form.is_valid():
+            print("form valid")
+            followz= f_form.save(commit=False)
+            followz.name = str(request.user.id)+"-" + str(profile.user.id)
+            print(followz.name)
+            followz.save()
+            messages.success(request, f'Follower added!')
+            return redirect('profile',profile.id)
+        else:
+            print("form invalid")
+    else:
+        f_form=FollowersForm()
+        print("Else")
+
+    
     if request.method =='POST':
         p_form=ProfileUpdateForm(request.POST, request.FILES,instance=request.user.profile)
   
         if p_form.is_valid():
             p_form.save()
             messages.success(request, f'Your account has been updated!')
-            return redirect('profile')
+            return redirect('profile',profile.id)
   
     else:
         p_form=ProfileUpdateForm(request.POST,request.FILES,instance=request.user.profile)
 
 
     fo=Profile.pro()
-    return render(request, 'profile/profile.html',{"fo":fo,'p_form':p_form} )
+
+    profile=Profile.objects.get(id=id)
+    current_profile=Profile.objects.get(user=request.user)
+
+
+
+    
+
+
+    return render(request, 'profile/profile.html',{"fo":fo,'p_form':p_form,'f_form':f_form,"profile":profile, "current_profile":current_profile} )
 
 
 def upload(request):
@@ -94,4 +124,6 @@ def search(request):
     else:
         message = 'Enter term to search'
         return render(request, 'photos/search.html', {'message':message})
+
+
 

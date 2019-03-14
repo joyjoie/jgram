@@ -1,6 +1,6 @@
 from django import forms
 from django.contrib.auth.models import User
-from .models import Profile, Comments,Image
+from .models import Profile, Comments,Image,Followers
 
 
 
@@ -20,4 +20,8 @@ class ImageForm(forms.ModelForm):
         model = Image
         exclude =['pub_date', 'likes']
 
+class FollowersForm(forms.ModelForm):
+    class Meta:
+        model = Followers
+        exclude=['name']
         
