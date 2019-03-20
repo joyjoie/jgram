@@ -54,7 +54,7 @@ joy=# CREATE DATABASE photo;
 ```
 * make migrations
 ```bash
-(virtual)$ python3.6 manage.py makemigrations gallery
+(virtual)$ python3.6 manage.py makemigrations 
 (virtual)$ python3.6 manage.py migrate
 ```
 * to run the project enter this command

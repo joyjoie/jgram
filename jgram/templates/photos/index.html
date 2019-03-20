@@ -37,9 +37,9 @@
 
       </form>
       {% for comment in comments%}
-        {%if comment.img == image%}
-        <p><strong>{{comment.user.username}}</strong> {{comment.comment}}</p>
-        {% endif%}
+      {%if comment.img == image%}
+      <p><strong>{{comment.user.username}}</strong> {{comment.comment}}</p>
+      {% endif%}
       {%endfor%}
 
       <form action="{% url 'index'%}" method="POST" enctype="multipart/form-data">
